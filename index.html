@@ -17,6 +17,9 @@
         th {
             background-color: #f2f2f2;
         }
+        tfoot td {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -35,6 +38,14 @@
         </thead>
         <tbody>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">Total</td>
+                <td id="total-adults">0</td>
+                <td id="total-children">0</td>
+                <td></td>
+            </tr>
+        </tfoot>
     </table>
 
     <script>
@@ -53,6 +64,8 @@
 
                 const data = await response.json();
                 const tableBody = document.querySelector('#data-table tbody');
+                let totalAdults = 0;
+                let totalChildren = 0;
                 
                 data.project_data.forEach(item => {
                     const row = document.createElement('tr');
@@ -66,7 +79,13 @@
                         <td>${item.data.comments || 'N/A'}</td>
                     `;
                     tableBody.appendChild(row);
+
+                    totalAdults += item.data.adults;
+                    totalChildren += item.data.children;
                 });
+
+                document.getElementById('total-adults').textContent = totalAdults;
+                document.getElementById('total-children').textContent = totalChildren;
             } catch (error) {
                 console.error('Error:', error);
             }
